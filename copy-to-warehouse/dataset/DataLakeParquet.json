@@ -13,9 +13,6 @@
 			"Directory": {
 				"type": "string",
 				"defaultValue": "/1-raw/retail-adventureworks/"
-			},
-			"File": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -23,10 +20,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().File",
-					"type": "Expression"
-				},
 				"folderPath": {
 					"value": "@dataset().Directory",
 					"type": "Expression"

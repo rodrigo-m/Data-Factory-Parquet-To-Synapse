@@ -20,7 +20,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FileSystem": "modern-data",
-							"Directory": "/1-raw/retail-adventureworks/"
+							"Directory": "/1-raw/retail-adventureworks"
 						}
 					},
 					"fieldList": [],
@@ -31,7 +31,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEachParquetFile",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -82,8 +82,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileSystem": "modern-data",
-										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address",
-										"File": "/"
+										"Directory": {
+											"value": "/1-raw/retail-adventureworks/@{item()}",
+											"type": "Expression"
+										}
 									}
 								}
 							],
