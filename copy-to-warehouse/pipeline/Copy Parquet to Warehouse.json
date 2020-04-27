@@ -83,7 +83,7 @@
 									"parameters": {
 										"FileSystem": "modern-data",
 										"Directory": {
-											"value": "/1-raw/retail-adventureworks/@{item()}",
+											"value": "/1-raw/retail-adventureworks/",
 											"type": "Expression"
 										}
 									}
