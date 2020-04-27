@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Parquet to Table",
-				"type": "Copy",
+				"name": "List of Files",
+				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -15,78 +15,127 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "ParquetSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						}
-					},
-					"sink": {
-						"type": "SqlDWSink",
-						"allowCopyCommand": true,
-						"tableOption": "autoCreate"
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
+					"dataset": {
 						"referenceName": "DataLakeParquet",
 						"type": "DatasetReference",
 						"parameters": {
 							"FileSystem": "modern-data",
-							"Directory": "/1-raw/retail-adventureworks/SalesLT.Address",
-							"File": "/"
+							"Directory": "/1-raw/retail-adventureworks/"
 						}
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true
 					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DataWarehouseTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableSchema": "dbo",
-							"TableName": "Address_tmp"
-						}
-					}
-				]
+				}
 			},
 			{
-				"name": "SwitchTables",
-				"type": "SqlServerStoredProcedure",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Parquet to Table",
+						"activity": "List of Files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[SwitchTable]",
-					"storedProcedureParameters": {
-						"TableName": {
-							"value": "Address",
-							"type": "String"
+					"items": {
+						"value": "@activity('List of Files').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Parquet to Table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "SqlDWSink",
+									"allowCopyCommand": true,
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DataLakeParquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileSystem": "modern-data",
+										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address",
+										"File": "/"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DataWarehouseTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableSchema": "dbo",
+										"TableName": "Address_tmp"
+									}
+								}
+							]
 						},
-						"TableSchema": {
-							"value": "dbo",
-							"type": "String"
+						{
+							"name": "SwitchTables",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Parquet to Table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SwitchTable]",
+								"storedProcedureParameters": {
+									"TableName": {
+										"value": "Address",
+										"type": "String"
+									},
+									"TableSchema": {
+										"value": "dbo",
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AdventureWorksDW",
+								"type": "LinkedServiceReference"
+							}
 						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AdventureWorksDW",
-					"type": "LinkedServiceReference"
+					]
 				}
 			}
 		],
