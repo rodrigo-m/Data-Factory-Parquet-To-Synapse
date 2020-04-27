@@ -47,10 +47,47 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableSchema": "dbo",
-							"TableName": "Address"
+							"TableName": "Address_tmp"
 						}
 					}
 				]
+			},
+			{
+				"name": "SwitchTables",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Parquet to Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[SwitchTable]",
+					"storedProcedureParameters": {
+						"TableName": {
+							"value": "dbo",
+							"type": "String"
+						},
+						"TableSchema": {
+							"value": "Address",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AdventureWorksDW",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
