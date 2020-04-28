@@ -74,7 +74,13 @@
 									"type": "ParquetSource",
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
-										"recursive": true
+										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@item().SourcePath",
+											"type": "Expression"
+										},
+										"wildcardFileName": "*.parquet",
+										"enablePartitionDiscovery": false
 									}
 								},
 								"sink": {
