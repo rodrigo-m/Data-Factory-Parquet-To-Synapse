@@ -95,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileSystem": "modern-data",
-										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address/*.parquet"
+										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address/*"
 									}
 								}
 							],
