@@ -114,8 +114,7 @@
 										"rejectType": "value",
 										"useTypeDefault": true
 									},
-									"tableOption": "autoCreate",
-									"disableMetricsCollection": true
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false
 							},
