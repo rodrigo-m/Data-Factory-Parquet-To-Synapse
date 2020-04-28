@@ -18,197 +18,16 @@
 		"DataLake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adlsgen2dev01.dfs.core.windows.net"
+		},
+		"DataLakeBlobApi_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://adlsgen2dev01.blob.core.windows.net"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/RefreshWarehouseWithParquetSources')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ForEachParquetFile",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "GetSourceList",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GetSourceList').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "SwitchTables",
-									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "ParquetToTable",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"storedProcedureName": "[[dbo].[SwitchTable]",
-										"storedProcedureParameters": {
-											"TableName": {
-												"value": {
-													"value": "@item().TargetTableName",
-													"type": "Expression"
-												},
-												"type": "String"
-											},
-											"TableSchema": {
-												"value": {
-													"value": "@item().TargetTable",
-													"type": "Expression"
-												},
-												"type": "String"
-											}
-										}
-									},
-									"linkedServiceName": {
-										"referenceName": "AdventureWorksDW",
-										"type": "LinkedServiceReference"
-									}
-								},
-								{
-									"name": "ParquetToTable",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [
-										{
-											"name": "Source",
-											"value": "@{'modern-data'}//"
-										},
-										{
-											"name": "Destination",
-											"value": "@{item().TargetTableSchema}.@{item().TargetTableName}"
-										}
-									],
-									"typeProperties": {
-										"source": {
-											"type": "ParquetSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"wildcardFolderPath": {
-													"value": "@item().SourceFolder",
-													"type": "Expression"
-												},
-												"wildcardFileName": "*",
-												"enablePartitionDiscovery": false
-											}
-										},
-										"sink": {
-											"type": "SqlDWSink",
-											"allowPolyBase": true,
-											"polyBaseSettings": {
-												"rejectValue": 10,
-												"rejectType": "value",
-												"useTypeDefault": true
-											},
-											"tableOption": "autoCreate"
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "DataLakeParquet",
-											"type": "DatasetReference",
-											"parameters": {
-												"FileSystem": "modern-data"
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DataWarehouseTable",
-											"type": "DatasetReference",
-											"parameters": {
-												"TableSchema": {
-													"value": "@item().TargetTableSchema",
-													"type": "Expression"
-												},
-												"TableName": {
-													"value": "@item().TargetTableName",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "GetSourceList",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "DataLakeCsv",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DataLakeCsv')]",
-				"[concat(variables('factoryId'), '/linkedServices/AdventureWorksDW')]",
-				"[concat(variables('factoryId'), '/datasets/DataLakeParquet')]",
-				"[concat(variables('factoryId'), '/datasets/DataWarehouseTable')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataLakeCsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -269,6 +88,24 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/DataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataWarehouseQuery')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AdventureWorksDW",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AdventureWorksDW')]"
 			]
 		},
 		{
@@ -341,6 +178,248 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('DataLake_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RefreshWarehouseWithParquetSources')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEachParquetFile",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetSourceList",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetSourceList').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "SwitchTables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "ParquetToTable",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[SwitchTable]",
+										"storedProcedureParameters": {
+											"TableName": {
+												"value": {
+													"value": "@item().TargetTableName",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"TableSchema": {
+												"value": {
+													"value": "@item().TargetTable",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "AdventureWorksDW",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "ParquetToTable",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "TruncateTargetTable",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "@{'modern-data'}//"
+										},
+										{
+											"name": "Destination",
+											"value": "@{item().TargetTableSchema}.@{item().TargetTableName}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "ParquetSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFolderPath": {
+													"value": "@item().SourceFolder",
+													"type": "Expression"
+												},
+												"wildcardFileName": "*",
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "SqlDWSink",
+											"allowPolyBase": true,
+											"polyBaseSettings": {
+												"rejectValue": 10,
+												"rejectType": "value",
+												"useTypeDefault": true
+											},
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"enableSkipIncompatibleRow": true,
+										"redirectIncompatibleRowSettings": {
+											"linkedServiceName": {
+												"referenceName": "DataLakeBlobApi",
+												"type": "LinkedServiceReference"
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DataLakeParquet",
+											"type": "DatasetReference",
+											"parameters": {
+												"FileSystem": "modern-data"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DataWarehouseTable",
+											"type": "DatasetReference",
+											"parameters": {
+												"TableSchema": {
+													"value": "@item().TargetTableSchema",
+													"type": "Expression"
+												},
+												"TableName": {
+													"value": "@item().TargetTableName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "TruncateTargetTable",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlDWSource",
+											"sqlReaderQuery": {
+												"value": "truncate table @{item().TargetTableSchema}.@{item().TargetTableName};\nselect 1 as TruncateSuccessful",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00"
+										},
+										"dataset": {
+											"referenceName": "DataWarehouseQuery",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "GetSourceList",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DataLakeCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DataLakeCsv')]",
+				"[concat(variables('factoryId'), '/linkedServices/AdventureWorksDW')]",
+				"[concat(variables('factoryId'), '/datasets/DataLakeParquet')]",
+				"[concat(variables('factoryId'), '/datasets/DataWarehouseTable')]",
+				"[concat(variables('factoryId'), '/datasets/DataWarehouseQuery')]",
+				"[concat(variables('factoryId'), '/linkedServices/DataLakeBlobApi')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataLakeBlobApi')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"serviceEndpoint": "[parameters('DataLakeBlobApi_properties_typeProperties_serviceEndpoint')]"
 				}
 			},
 			"dependsOn": []

@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "https://adlsgen2dev01.dfs.core.windows.net"
 		},
+		"DataLakeBlobApi_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://adlsgen2dev01.blob.core.windows.net"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -54,6 +58,9 @@
 					},
 					"DataLake_properties_typeProperties_url": {
 						"value": "[parameters('DataLake_properties_typeProperties_url')]"
+					},
+					"DataLakeBlobApi_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('DataLakeBlobApi_properties_typeProperties_serviceEndpoint')]"
 					}
 				}
 			},

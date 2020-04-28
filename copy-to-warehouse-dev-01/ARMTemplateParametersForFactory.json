@@ -13,6 +13,9 @@
 		},
 		"DataLake_properties_typeProperties_url": {
 			"value": "https://adlsgen2dev01.dfs.core.windows.net"
+		},
+		"DataLakeBlobApi_properties_typeProperties_serviceEndpoint": {
+			"value": "https://adlsgen2dev01.blob.core.windows.net"
 		}
 	}
 }
