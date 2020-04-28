@@ -116,26 +116,12 @@
 									},
 									"disableMetricsCollection": false
 								},
-								"enableStaging": true,
-								"stagingSettings": {
-									"linkedServiceName": {
-										"referenceName": "DataLakeBlobApi",
-										"type": "LinkedServiceReference"
-									},
-									"path": {
-										"value": "@{item().SourceFolder}",
-										"type": "Expression"
-									}
-								},
+								"enableStaging": false,
 								"enableSkipIncompatibleRow": true,
 								"redirectIncompatibleRowSettings": {
 									"linkedServiceName": {
 										"referenceName": "DataLakeBlobApi",
 										"type": "LinkedServiceReference"
-									},
-									"path": {
-										"value": "@{item().SourceFolder}\\RejectedRows",
-										"type": "Expression"
 									}
 								}
 							},
