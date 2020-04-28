@@ -1,5 +1,5 @@
 {
-	"name": "Copy Parquet to Warehouse x",
+	"name": "Copy Parquet to Warehouse",
 	"properties": {
 		"activities": [
 			{
