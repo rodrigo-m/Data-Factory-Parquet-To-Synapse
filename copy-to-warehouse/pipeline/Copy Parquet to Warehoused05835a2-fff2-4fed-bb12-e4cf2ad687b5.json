@@ -1,0 +1,147 @@
+{
+	"name": "Copy Parquet to Warehoused05835a2-fff2-4fed-bb12-e4cf2ad687b5",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEachParquetFile",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetSourceList",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('List of Files').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Parquet to Table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "SqlDWSink",
+									"allowCopyCommand": true,
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DataLakeParquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileSystem": "modern-data",
+										"Directory": {
+											"value": "/1-raw/retail-adventureworks/",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DataWarehouseTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableSchema": "dbo",
+										"TableName": "Address_tmp"
+									}
+								}
+							]
+						},
+						{
+							"name": "SwitchTables",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Parquet to Table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SwitchTable]",
+								"storedProcedureParameters": {
+									"TableName": {
+										"value": "Address",
+										"type": "String"
+									},
+									"TableSchema": {
+										"value": "dbo",
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AdventureWorksDW",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetSourceList",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "DataLakeCsv",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
