@@ -76,7 +76,7 @@
 										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
 										"wildcardFolderPath": {
-											"value": "@item().SourcePath",
+											"value": "@item().SourceFolder",
 											"type": "Expression"
 										},
 										"wildcardFileName": "*",
