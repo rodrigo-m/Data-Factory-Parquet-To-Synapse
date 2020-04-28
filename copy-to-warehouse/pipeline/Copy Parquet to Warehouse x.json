@@ -21,68 +21,9 @@
 					},
 					"activities": [
 						{
-							"name": "Parquet to Table",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "ParquetSource",
-									"storeSettings": {
-										"type": "AzureBlobFSReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									}
-								},
-								"sink": {
-									"type": "SqlDWSink",
-									"allowCopyCommand": true,
-									"tableOption": "autoCreate"
-								},
-								"enableStaging": false
-							},
-							"inputs": [
-								{
-									"referenceName": "DataLakeParquet",
-									"type": "DatasetReference",
-									"parameters": {
-										"FileSystem": "modern-data",
-										"Directory": {
-											"value": "/1-raw/retail-adventureworks/SalesLT.Address/*.parquet",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "DataWarehouseTable",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableSchema": "dbo",
-										"TableName": "Address_tmp"
-									}
-								}
-							]
-						},
-						{
 							"name": "SwitchTables",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "Parquet to Table",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
