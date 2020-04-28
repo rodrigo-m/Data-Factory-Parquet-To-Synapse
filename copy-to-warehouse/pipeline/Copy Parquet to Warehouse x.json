@@ -77,6 +77,16 @@
 										"recursive": true
 									}
 								},
+								"sink": {
+									"type": "SqlDWSink",
+									"allowPolyBase": true,
+									"polyBaseSettings": {
+										"rejectValue": 0,
+										"rejectType": "value",
+										"useTypeDefault": true
+									},
+									"tableOption": "autoCreate"
+								},
 								"enableStaging": false
 							},
 							"inputs": [
@@ -86,6 +96,22 @@
 									"parameters": {
 										"FileSystem": "modern-data",
 										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DataWarehouseTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableSchema": {
+											"value": "@item().TargetTableSchema",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().TargetTableName",
+											"type": "Expression"
+										}
 									}
 								}
 							]
