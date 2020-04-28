@@ -12,7 +12,7 @@
 			},
 			"Directory": {
 				"type": "string",
-				"defaultValue": "/1-raw/retail-adventureworks/"
+				"defaultValue": "/1-raw/retail-adventureworks/SalesLT.Address"
 			}
 		},
 		"annotations": [],
