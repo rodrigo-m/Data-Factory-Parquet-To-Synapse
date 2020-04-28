@@ -25,7 +25,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Copy Parquet to Warehouse')]",
+			"name": "[concat(parameters('factoryName'), '/Copy Parquet to Warehouse xce9993e2-b392-4bb2-a68f-cdf05ebdf9c1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -51,14 +51,7 @@
 								{
 									"name": "SwitchTables",
 									"type": "SqlServerStoredProcedure",
-									"dependsOn": [
-										{
-											"activity": "ParquetToTable",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
+									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -88,7 +81,14 @@
 								{
 									"name": "ParquetToTable",
 									"type": "Copy",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "SwitchTables",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -104,7 +104,7 @@
 												"type": "AzureBlobFSReadSettings",
 												"recursive": true,
 												"wildcardFolderPath": {
-													"value": "@item().SourceFolder",
+													"value": "@item().SourcePath",
 													"type": "Expression"
 												},
 												"wildcardFileName": "*",
