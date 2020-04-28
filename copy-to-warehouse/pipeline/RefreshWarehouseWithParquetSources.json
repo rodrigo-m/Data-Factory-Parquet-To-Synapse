@@ -116,7 +116,17 @@
 									},
 									"disableMetricsCollection": false
 								},
-								"enableStaging": false,
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "DataLakeBlobApi",
+										"type": "LinkedServiceReference"
+									},
+									"path": {
+										"value": "@{item().SourceFolder}\\Staging",
+										"type": "Expression"
+									}
+								},
 								"enableSkipIncompatibleRow": true,
 								"redirectIncompatibleRowSettings": {
 									"linkedServiceName": {
