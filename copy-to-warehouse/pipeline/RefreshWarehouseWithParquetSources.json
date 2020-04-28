@@ -117,13 +117,7 @@
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
-								"enableSkipIncompatibleRow": true,
-								"redirectIncompatibleRowSettings": {
-									"linkedServiceName": {
-										"referenceName": "DataLakeBlobApi",
-										"type": "LinkedServiceReference"
-									}
-								}
+								"enableSkipIncompatibleRow": true
 							},
 							"inputs": [
 								{
