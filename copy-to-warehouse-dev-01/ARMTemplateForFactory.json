@@ -44,7 +44,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('GetSourceList').output",
+								"value": "@activity('GetSourceList').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -108,7 +108,8 @@
 								"referenceName": "DataLakeCsv",
 								"type": "DatasetReference",
 								"parameters": {}
-							}
+							},
+							"firstRowOnly": false
 						}
 					}
 				],
