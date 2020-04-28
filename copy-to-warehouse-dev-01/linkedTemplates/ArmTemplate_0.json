@@ -414,8 +414,7 @@
 				"[concat(variables('factoryId'), '/linkedServices/AdventureWorksDW')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeParquet')]",
 				"[concat(variables('factoryId'), '/datasets/DataWarehouseTable')]",
-				"[concat(variables('factoryId'), '/datasets/DataWarehouseQuery')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeBlobApi')]"
+				"[concat(variables('factoryId'), '/datasets/DataWarehouseQuery')]"
 			]
 		},
 		{
@@ -442,6 +441,7 @@
 								"type": "Expression"
 							},
 							"isSequential": false,
+							"batchCount": 4,
 							"activities": [
 								{
 									"name": "ParquetToTable",
@@ -593,8 +593,7 @@
 				"[concat(variables('factoryId'), '/datasets/DataLakeCsv')]",
 				"[concat(variables('factoryId'), '/datasets/DataLakeParquet')]",
 				"[concat(variables('factoryId'), '/datasets/DataWarehouseTable')]",
-				"[concat(variables('factoryId'), '/datasets/DataWarehouseQuery')]",
-				"[concat(variables('factoryId'), '/linkedServices/DataLakeBlobApi')]"
+				"[concat(variables('factoryId'), '/datasets/DataWarehouseQuery')]"
 			]
 		}
 	]
