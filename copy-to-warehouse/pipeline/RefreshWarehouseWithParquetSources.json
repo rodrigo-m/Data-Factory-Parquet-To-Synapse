@@ -117,14 +117,7 @@
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
-								"enableSkipIncompatibleRow": true,
-								"redirectIncompatibleRowSettings": {
-									"linkedServiceName": {
-										"referenceName": "DataLake",
-										"type": "LinkedServiceReference"
-									},
-									"path": "modern-data/erroroutput"
-								}
+								"enableSkipIncompatibleRow": true
 							},
 							"inputs": [
 								{
