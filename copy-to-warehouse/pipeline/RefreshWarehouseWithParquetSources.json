@@ -123,7 +123,7 @@
 										"type": "LinkedServiceReference"
 									},
 									"path": {
-										"value": "@{item().SourceFolder}\\Staging",
+										"value": "@{item().SourceFolder}",
 										"type": "Expression"
 									}
 								},
