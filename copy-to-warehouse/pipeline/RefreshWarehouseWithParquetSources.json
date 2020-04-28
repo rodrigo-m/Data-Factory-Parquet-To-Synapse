@@ -1,5 +1,5 @@
 {
-	"name": "Copy Parquet to Warehouse x1",
+	"name": "RefreshWarehouseWithParquetSources",
 	"properties": {
 		"activities": [
 			{
