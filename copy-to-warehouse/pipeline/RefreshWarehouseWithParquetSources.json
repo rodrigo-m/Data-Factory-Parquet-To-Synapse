@@ -161,7 +161,7 @@
 								"source": {
 									"type": "SqlDWSource",
 									"sqlReaderQuery": {
-										"value": "truncate table dbo.Customer",
+										"value": "truncate table @{item().TargetTableSchema}.Customer;\nselect 1 as TruncateSuccessful",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
