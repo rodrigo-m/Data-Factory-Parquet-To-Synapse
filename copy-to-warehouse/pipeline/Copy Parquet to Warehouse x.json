@@ -79,7 +79,7 @@
 											"value": "@item().SourcePath",
 											"type": "Expression"
 										},
-										"wildcardFileName": "*.parquet",
+										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									}
 								},
