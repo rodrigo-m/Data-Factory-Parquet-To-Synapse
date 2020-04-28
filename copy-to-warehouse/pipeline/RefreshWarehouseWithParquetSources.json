@@ -67,7 +67,14 @@
 						{
 							"name": "ParquetToTable",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "TruncateTargetTable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -137,6 +144,30 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "TruncateTargetTable",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlDWSource",
+									"sqlReaderQuery": "truncate table stg.Customer",
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "DataWarehouseTable",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
