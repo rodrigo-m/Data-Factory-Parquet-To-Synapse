@@ -9,10 +9,6 @@
 			"FileSystem": {
 				"type": "string",
 				"defaultValue": "modern-data"
-			},
-			"Directory": {
-				"type": "string",
-				"defaultValue": "/1-raw/retail-adventureworks/SalesLT.Address"
 			}
 		},
 		"annotations": [],
@@ -20,10 +16,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": {
-					"value": "@dataset().Directory",
-					"type": "Expression"
-				},
 				"fileSystem": {
 					"value": "@dataset().FileSystem",
 					"type": "Expression"

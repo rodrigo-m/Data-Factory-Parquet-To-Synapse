@@ -100,8 +100,7 @@
 									"referenceName": "DataLakeParquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"FileSystem": "modern-data",
-										"Directory": "@item().SourcePath/*"
+										"FileSystem": "modern-data"
 									}
 								}
 							],
