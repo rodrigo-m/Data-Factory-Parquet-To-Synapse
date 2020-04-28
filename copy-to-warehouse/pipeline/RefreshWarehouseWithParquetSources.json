@@ -43,11 +43,17 @@
 								"storedProcedureName": "[dbo].[SwitchTable]",
 								"storedProcedureParameters": {
 									"TableName": {
-										"value": "Address",
+										"value": {
+											"value": "@item().TargetTableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"TableSchema": {
-										"value": "dbo",
+										"value": {
+											"value": "@item().TargetTable",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
