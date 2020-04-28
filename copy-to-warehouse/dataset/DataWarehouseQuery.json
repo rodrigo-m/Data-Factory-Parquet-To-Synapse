@@ -1,0 +1,12 @@
+{
+	"name": "DataWarehouseQuery",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AdventureWorksDW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": []
+	}
+}
