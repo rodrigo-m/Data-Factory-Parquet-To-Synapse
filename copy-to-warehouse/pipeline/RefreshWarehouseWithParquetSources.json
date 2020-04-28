@@ -160,7 +160,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlDWSource",
-									"sqlReaderQuery": "truncate table stg.Customer",
+									"sqlReaderQuery": {
+										"value": "truncate table @{item().TargetTableSchema}.@(item().TargetTableName)",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00"
 								},
 								"dataset": {
