@@ -55,7 +55,7 @@
 									"parameters": {
 										"FileSystem": "modern-data",
 										"Directory": {
-											"value": "/1-raw/retail-adventureworks/SalesLT.Address/",
+											"value": "/1-raw/retail-adventureworks/SalesLT.Address/*.parquet",
 											"type": "Expression"
 										}
 									}
