@@ -43,7 +43,7 @@
 							"userProperties": [
 								{
 									"name": "Source",
-									"value": "@{'modern-data'}//"
+									"value": "@{'modern-data'}/@item().SourceFolder"
 								},
 								{
 									"name": "Destination",
