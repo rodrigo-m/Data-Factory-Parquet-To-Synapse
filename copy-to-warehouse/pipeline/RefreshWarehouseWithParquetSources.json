@@ -110,13 +110,21 @@
 									"type": "SqlDWSink",
 									"allowPolyBase": true,
 									"polyBaseSettings": {
-										"rejectValue": 0,
+										"rejectValue": 10,
 										"rejectType": "value",
 										"useTypeDefault": true
 									},
 									"disableMetricsCollection": false
 								},
-								"enableStaging": false
+								"enableStaging": false,
+								"enableSkipIncompatibleRow": true,
+								"redirectIncompatibleRowSettings": {
+									"linkedServiceName": {
+										"referenceName": "DataLake",
+										"type": "LinkedServiceReference"
+									},
+									"path": "modern-data/erroroutput"
+								}
 							},
 							"inputs": [
 								{
