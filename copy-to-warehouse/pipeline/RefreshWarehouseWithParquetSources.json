@@ -23,7 +23,14 @@
 						{
 							"name": "SwitchTables",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "ParquetToTable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -53,14 +60,7 @@
 						{
 							"name": "ParquetToTable",
 							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "SwitchTables",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
