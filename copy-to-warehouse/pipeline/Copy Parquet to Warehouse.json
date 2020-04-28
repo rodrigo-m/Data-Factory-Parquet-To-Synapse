@@ -16,17 +16,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DataLakeParquet",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileSystem": "modern-data",
-							"Directory": "/1-raw/retail-adventureworks"
-						}
+						"referenceName": "DataLakeCsv",
+						"type": "DatasetReference"
 					},
 					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
 					}
 				}
 			},
