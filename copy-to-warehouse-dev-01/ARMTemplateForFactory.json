@@ -25,7 +25,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Copy Parquet to Warehouse x1')]",
+			"name": "[concat(parameters('factoryName'), '/RefreshWarehouseWithParquetSources')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -96,7 +96,16 @@
 										"secureOutput": false,
 										"secureInput": false
 									},
-									"userProperties": [],
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "@{'modern-data'}//"
+										},
+										{
+											"name": "Destination",
+											"value": "@{item().TargetTableSchema}.@{item().TargetTableName}"
+										}
+									],
 									"typeProperties": {
 										"source": {
 											"type": "ParquetSource",
@@ -115,7 +124,7 @@
 											"type": "SqlDWSink",
 											"allowPolyBase": true,
 											"polyBaseSettings": {
-												"rejectValue": 0,
+												"rejectValue": 10,
 												"rejectType": "value",
 												"useTypeDefault": true
 											},
