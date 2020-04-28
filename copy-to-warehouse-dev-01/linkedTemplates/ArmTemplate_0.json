@@ -183,11 +183,19 @@
 								"value": "@activity('GetSourceList').output.value",
 								"type": "Expression"
 							},
+							"isSequential": false,
 							"activities": [
 								{
 									"name": "SwitchTables",
 									"type": "SqlServerStoredProcedure",
-									"dependsOn": [],
+									"dependsOn": [
+										{
+											"activity": "ParquetToTable",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -200,11 +208,17 @@
 										"storedProcedureName": "[[dbo].[SwitchTable]",
 										"storedProcedureParameters": {
 											"TableName": {
-												"value": "Address",
+												"value": {
+													"value": "@item().TargetTableName",
+													"type": "Expression"
+												},
 												"type": "String"
 											},
 											"TableSchema": {
-												"value": "dbo",
+												"value": {
+													"value": "@item().TargetTable",
+													"type": "Expression"
+												},
 												"type": "String"
 											}
 										}
@@ -217,14 +231,7 @@
 								{
 									"name": "ParquetToTable",
 									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "SwitchTables",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
+									"dependsOn": [],
 									"policy": {
 										"timeout": "7.00:00:00",
 										"retry": 0,
@@ -249,7 +256,7 @@
 												"type": "AzureBlobFSReadSettings",
 												"recursive": true,
 												"wildcardFolderPath": {
-													"value": "@item().SourcePath",
+													"value": "@item().SourceFolder",
 													"type": "Expression"
 												},
 												"wildcardFileName": "*",
