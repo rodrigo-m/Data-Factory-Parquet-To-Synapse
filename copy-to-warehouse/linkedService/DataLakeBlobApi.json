@@ -1,0 +1,10 @@
+{
+	"name": "DataLakeBlobApi",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://adlsgen2dev01.blob.core.windows.net"
+		}
+	}
+}
