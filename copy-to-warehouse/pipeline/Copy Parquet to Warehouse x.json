@@ -100,8 +100,7 @@
 									"referenceName": "DataLakeParquet",
 									"type": "DatasetReference",
 									"parameters": {
-										"FileSystem": "modern-data",
-										"Directory": "/1-raw/retail-adventureworks/SalesLT.Address/*"
+										"FileSystem": "modern-data"
 									}
 								}
 							],
