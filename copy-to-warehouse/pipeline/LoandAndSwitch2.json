@@ -23,11 +23,11 @@
 					"batchCount": 4,
 					"activities": [
 						{
-							"name": "CopyParquetToTable",
+							"name": "CopyParquetToStagingTable",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "TruncateTargetTable",
+									"activity": "TruncateStagingTable",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -47,7 +47,7 @@
 								},
 								{
 									"name": "Destination",
-									"value": "@{item().TargetTableSchema}.@{item().TargetTableName}"
+									"value": "@{item().StagingTableSchema}.@{item().StagingTableName}"
 								}
 							],
 							"typeProperties": {
@@ -92,11 +92,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"TableSchema": {
-											"value": "@item().TargetTableSchema",
+											"value": "@item().StagingTableSchema",
 											"type": "Expression"
 										},
 										"TableName": {
-											"value": "@item().TargetTableName",
+											"value": "@item().StagingTableName",
 											"type": "Expression"
 										}
 									}
@@ -104,7 +104,7 @@
 							]
 						},
 						{
-							"name": "TruncateTargetTable",
+							"name": "TruncateStagingTable",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
