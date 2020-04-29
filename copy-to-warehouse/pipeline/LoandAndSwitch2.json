@@ -23,7 +23,7 @@
 					"batchCount": 4,
 					"activities": [
 						{
-							"name": "CopyParquetToStagingTable",
+							"name": "ParquetToStagingTable",
 							"type": "Copy",
 							"dependsOn": [
 								{
