@@ -102,7 +102,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "ParquetToStagingTable",
+									"activity": "Wait1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -152,6 +152,25 @@
 							"linkedServiceName": {
 								"referenceName": "AdventureWorksDW",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "ParquetToStagingTable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": {
+									"value": "@rand(0,10)",
+									"type": "Expression"
+								}
 							}
 						}
 					]
