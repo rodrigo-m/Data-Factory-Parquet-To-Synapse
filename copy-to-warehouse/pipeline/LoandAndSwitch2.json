@@ -147,17 +147,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "SqlDWSource",
+						"sqlReaderQuery": "select \n    SourceFolder,\n    StagingTableSchema,\n    StagingTableName,\n    TargetTableSchema,\n    TargetTableName,\n    LastRefreshed\nfrom dbo.SourceList\nwhere\n    IsEnabled = 1\norder by LastRefreshed asc",
+						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
-						"referenceName": "DataLakeCsv",
+						"referenceName": "DataWarehouseQuery",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
