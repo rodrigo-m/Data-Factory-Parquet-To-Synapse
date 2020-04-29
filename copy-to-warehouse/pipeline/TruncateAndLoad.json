@@ -1,5 +1,5 @@
 {
-	"name": "RefreshWarehouseWithParquetSources_copy1",
+	"name": "TruncateAndLoad",
 	"properties": {
 		"activities": [
 			{
