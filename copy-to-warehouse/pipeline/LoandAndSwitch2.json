@@ -61,7 +61,7 @@
 									"type": "SqlDWSink",
 									"allowPolyBase": true,
 									"polyBaseSettings": {
-										"rejectValue": 0,
+										"rejectValue": 10,
 										"rejectType": "value",
 										"useTypeDefault": true
 									},
