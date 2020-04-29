@@ -116,7 +116,7 @@
 									},
 									"disableMetricsCollection": false
 								},
-								"enableStaging": false,
+								"enableStaging": true,
 								"enableSkipIncompatibleRow": true
 							},
 							"inputs": [
