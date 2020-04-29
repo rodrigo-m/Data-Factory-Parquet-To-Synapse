@@ -65,6 +65,7 @@
 										"rejectType": "value",
 										"useTypeDefault": true
 									},
+									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
