@@ -1,0 +1,16 @@
+{
+	"name": "mlw_dev_01",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureMLService",
+		"typeProperties": {
+			"subscriptionId": "fcdc11e4-fdf9-4620-9ec3-38a6a12ae89a",
+			"resourceGroupName": "modern-data-dev-01",
+			"mlWorkspaceName": "mlw-dev-01",
+			"servicePrincipalId": "087579b2-6d77-4093-801f-0754d5b9f88b",
+			"tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkNPUFktVE8tV0FSRUhPVVNFLURFVi0wMV9iNWVmYjQ2Yy0zMjhkLTRkODEtOGU0Ni03YTZhOTgxZTE4MmIiDQp9"
+		}
+	}
+}
